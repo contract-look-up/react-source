@@ -1,0 +1,24 @@
+.errorMessage {
+    height: auto;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    width: 100%;
+    border-color: red;
+    counter-reset: red;
+    .ant-card-body {
+        color: red;
+    }
+    .ant-card-head-title {
+        color: red;
+        border-color: red;
+    }
+}
+
+.resultMessage {
+    height: auto;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    width: 100%;
+}
