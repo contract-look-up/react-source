@@ -14,4 +14,7 @@ export interface CompiledContract extends NatspecDocs {
     contractName: string,
     abi: AbiItem[],
     networks: any,
+    source?: any,
+    updatedAt?: string,
+    compiler?: any,
 }
