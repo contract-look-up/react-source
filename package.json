@@ -29,7 +29,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "clear": "rm -rf contract-look-up.github.io/*",
+    "migrate": "react-scripts build && rm -rf contract-look-up.github.io/* && cp -r build contract-look-up.github.io"
   },
   "eslintConfig": {
     "extends": [
