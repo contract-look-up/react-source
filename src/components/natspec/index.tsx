@@ -168,9 +168,7 @@ export function bindOutputs(abi: AbiItem, fromData: { [key: string]: any }, doc?
         const typeEncode = output.type + (secondaryType ? secondaryType : '');
 
         // 只需要转换$amount类型
-        if (!typeEncode.includes('$amount:')) {
-            binded.push(fromData[index])
-        } else {
+        if (typeEncode.includes('$amount:')) {
             const splited = typeEncode.split(':');
             if (splited.length !== 2) {
                 throw Error(`无效的次要类型定义"${typeEncode}"在"${output.name}"，请检查源代码natspec风格注释的[次要类型定义符](在不确定类型的情况下发送交易会导致严重的数据问题).`);
@@ -185,10 +183,20 @@ export function bindOutputs(abi: AbiItem, fromData: { [key: string]: any }, doc?
                         )
                     ).toFixed(8) + ` ${splited[1].toUpperCase()}`)
                 )
-
             } else {
-                binded.push(parseFloat(fromWei(fromData[index], splited[1] as Unit)).toFixed(8) + ` ${splited[1].toUpperCase()}`)
+                binded.push(parseFloat(fromWei(fromData[index], splited[1] as Unit)).toString() + ` ${splited[1].toUpperCase()}`)
             }
+        } else if (typeEncode.includes('$timestemp')) {
+            const timestempUnix = parseInt(fromData[index]);
+
+            binded.push(
+                timestempUnix > 0
+                    ? moment.unix(timestempUnix).format('YYYY-MM-DD HH:mm:ss')
+                    : "无"
+            )
+        }
+        else {
+            binded.push(fromData[index])
         }
     });
 

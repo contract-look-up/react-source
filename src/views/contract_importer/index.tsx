@@ -29,8 +29,8 @@ export function ContractImport(params: {
                 仅支持标准的Compiled Contract 格式，比如truffle compile输出的文件，请注意确保是已部署的实例，请检查其中必须包含，abi，networks，字段。
             </p>
             <Row className="action-button-group">
-                <Button ghost disabled className="action" type="primary" size="large" icon={<PlusCircleOutlined />} >通过模版ABI创建</Button>
-                <Button ghost disabled className="action" type="primary" size="large" icon={<ImportOutlined />}>通过URL导入</Button>
+                <Button ghost disabled className="action" type="primary" size="large" icon={<PlusCircleOutlined />} >通过模版ABI创建(暂未实现)</Button>
+                <Button ghost disabled className="action" type="primary" size="large" icon={<ImportOutlined />}>通过URL导入(暂未实现)</Button>
             </Row>
         </Dragger>
     )
