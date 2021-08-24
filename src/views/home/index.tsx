@@ -86,7 +86,7 @@ function HomeView() {
                             paths[1] === `${contract.contractName}-event`
                         )
                     ) {
-                        const abi = contract.abi?.find((a) => (a.type === 'function' || a.type == 'event') && web3.eth.abi.encodeFunctionSignature(a) === paths[0])
+                        const abi = contract.abi?.find((a) => (a.type === 'function' || a.type === 'event') && web3.eth.abi.encodeFunctionSignature(a) === paths[0])
                         if (abi !== undefined) {
                             setContetState(StateCreator.ABIState(
                                 contract,

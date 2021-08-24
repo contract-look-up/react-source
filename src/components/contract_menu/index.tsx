@@ -1,9 +1,7 @@
 import Web3 from "web3";
 import { useState } from 'react';
-import { AbiItem } from 'web3-utils';
 import { Layout, Menu, Button } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
-import Dragger from "antd/lib/upload/Dragger";
 
 import {
     ProfileFilled,

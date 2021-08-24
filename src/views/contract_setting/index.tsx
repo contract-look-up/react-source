@@ -1,22 +1,9 @@
-import Web3 from "web3";
 import "antd/dist/antd.css";
 import { Card, Layout, PageHeader, Table, Badge } from 'antd';
-import * as utils from "../../utils"
-import { AbiItem } from 'web3-utils';
-import { ABIFunctionCallerView, ABIEventCallerView } from "../../components/abi_caller";
 import { CompiledContract } from '../../components/compile_contract'
 import { SourceCodeCard } from "../../components/source_code";
 import { Descriptions } from 'antd';
 import moment from "moment";
-
-import {
-    ProfileFilled,
-    AreaChartOutlined,
-    BarChartOutlined,
-    UserOutlined,
-    UploadOutlined,
-    SettingFilled,
-} from '@ant-design/icons';
 
 function NetWorkTable(params: {
     networks: Object[],
@@ -112,12 +99,12 @@ export function ContractSetting(params: {
                 </Descriptions.Item>
                 <Descriptions.Item label="CompilerVersion">
                     {
-                        contract.compiler?.version == undefined ? "None" : contract.compiler?.version
+                        contract.compiler?.version === undefined ? "None" : contract.compiler?.version
                     }
                 </Descriptions.Item>
                 <Descriptions.Item label="UpdateTime">
                     {
-                        contract.compiler?.version == undefined ? "None" : moment(contract.updatedAt).format('YYYY-MM-DD hh:mm:ss')
+                        contract.compiler?.version === undefined ? "None" : moment(contract.updatedAt).format('YYYY-MM-DD hh:mm:ss')
                     }
                 </Descriptions.Item>
             </Descriptions>

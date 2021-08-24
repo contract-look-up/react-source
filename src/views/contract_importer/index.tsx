@@ -1,14 +1,6 @@
-import Web3 from "web3";
 import "antd/dist/antd.css";
-import { Layout, PageHeader, Table, Badge, Row, Col, Divider, Button } from 'antd';
+import { Row, Button } from 'antd';
 import Dragger from "antd/lib/upload/Dragger";
-import * as utils from "../../utils"
-import { AbiItem } from 'web3-utils';
-import { ABIFunctionCallerView, ABIEventCallerView } from "../../components/abi_caller";
-import { CompiledContract } from '../../components/compile_contract'
-import { SourceCodeCard } from "../../components/source_code";
-import { Descriptions } from 'antd';
-import moment from "moment";
 import './index.scss';
 
 import {
