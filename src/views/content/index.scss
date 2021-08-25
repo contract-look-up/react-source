@@ -1,5 +1,7 @@
-.marginCard {
-    margin-top: 10px;
-    margin-left: 20px;
-    margin-right: 20px;
+@media (min-width: 1200px) {
+    .marginCard {
+        margin-top: 10px;
+        margin-left: 20px;
+        margin-right: 20px;
+    }
 }

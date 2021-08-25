@@ -3,13 +3,13 @@ import { useState } from 'react';
 import { Layout, Menu, Button } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
+
 import {
     ProfileFilled,
     AreaChartOutlined,
     BarChartOutlined,
     UserOutlined,
     UploadOutlined,
-    SettingFilled,
 } from '@ant-design/icons';
 
 import * as utils from '../../utils'
@@ -50,13 +50,14 @@ function ContractMenu(props: {
                 type="primary"
                 icon={<UserOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            > {
+            > 
+            {/* {
                     ownerAddress === undefined
                         ? 'Connect Failed'
                         : ownerAddress.length <= 0
                             ? 'Connectioning' :
                             `${ownerAddress.slice(0, 10)}...${ownerAddress.slice(ownerAddress.length - 10, ownerAddress.length)}`
-                }
+                } */}
             </Button>
         )
     }
@@ -70,18 +71,21 @@ function ContractMenu(props: {
                 height: '100vh',
                 position: 'fixed',
                 left: 0,
+                flex:1
             }}
+            collapsible={true}
+            defaultCollapsed={true}
         >
             <MenuHeader />
             <Menu
                 mode="inline"
                 theme="light"
-                style={{ height: '100%', borderRight: 1 }}
+                style={{ height: '100%', borderRight: 1 }} 
             >
                 {
                     props.contracts.map((contractObject, contractIndex) => {
                         return (
-                            <Menu.SubMenu
+                            <Menu.SubMenu 
                                 key={contractObject.contractName}
                                 icon={<ProfileFilled />}
                                 title={contractObject.contractName}>
