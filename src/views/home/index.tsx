@@ -66,7 +66,7 @@ function HomeView() {
                 />
                 <Layout className="site-layout">
                     <Layout.Sider
-                        width="80vw"
+                        width='80%'
                         style={{
                             marginLeft: '20vw',
                             overflow: 'auto',
@@ -74,6 +74,7 @@ function HomeView() {
                             width: '100%',
                             height: '100%',
                             left: 0,
+                            flex:2
                         }}
                     >
                         {
