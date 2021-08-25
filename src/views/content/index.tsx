@@ -17,7 +17,7 @@ export function FunctionContent(props: {
 
     const web3 = new Web3((window as any).ethereum);
 
-    const deployedAddress = contract.networks[networkID].address;
+    const deployedAddress = contract.networks !== undefined ? contract.networks[networkID]?.address : undefined;
 
     const fname = utils.functionFormatStringFromABI(abi)
 
@@ -62,9 +62,6 @@ export function FunctionContent(props: {
                 title={abi.name}
                 onBack={() => { }}
                 subTitle={parsedTitle()}
-                style={{
-                    marginBottom: '20px'
-                }}
             // extra={[
             //     <Button key="3">Operation</Button>,
             //     <Button key="2">Operation</Button>,
@@ -109,7 +106,6 @@ export function FunctionContent(props: {
                     />
                     : null
             }
-
         </Layout.Content >
     )
 }

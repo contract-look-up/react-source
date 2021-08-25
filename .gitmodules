@@ -1,0 +1,3 @@
+[submodule "contract-look-up.github.io"]
+	path = contract-look-up.github.io
+	url = https://github.com/contract-look-up/contract-look-up.github.io.git

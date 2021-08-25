@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import { useState } from 'react';
-import { AbiItem } from 'web3-utils';
 import { Layout, Menu, Button } from 'antd';
+import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 
 import {
@@ -17,11 +17,10 @@ import { CompiledContract } from '../compile_contract'
 
 import './index.scss'
 
-type OnSelectedABIHandleCallBack = (contract?: CompiledContract, abi?: AbiItem) => void
-
 function ContractMenu(props: {
     contracts: CompiledContract[],
-    onSelectedABI: OnSelectedABIHandleCallBack
+    onSelected: MenuClickEventHandler,
+    onDropFile: (e: any) => void,
 }) {
     const web3 = new Web3((window as any).ethereum);
 
@@ -90,8 +89,15 @@ function ContractMenu(props: {
                                 key={contractObject.contractName}
                                 icon={<ProfileFilled />}
                                 title={contractObject.contractName}>
+                                <Menu.Item
+                                    key={`${contractObject.contractName}-setting`}
+                                    onClick={props.onSelected}
+                                    icon={<SettingFilled />}
+                                >
+                                    合约信息
+                                </Menu.Item>
                                 <Menu.SubMenu
-                                    key={`${contractObject.contractName}-FunctionMenu`}
+                                    key={`${contractObject.contractName}-function`}
                                     title="函数调用"
                                     icon={<AreaChartOutlined />}
                                 >
@@ -102,8 +108,8 @@ function ContractMenu(props: {
                                             const funSignFormat = utils.functionFormatStringFromABI(abi);
                                             return (
                                                 <Menu.Item
-                                                    key={`${contractObject.contractName}-FunctionMenu-${abi.name}-${index}`}
-                                                    onClick={(_) => { props.onSelectedABI(contractObject, abi); }}
+                                                    key={web3.eth.abi.encodeFunctionSignature(abi)}
+                                                    onClick={props.onSelected}
                                                 >
                                                     {
                                                         contractObject.userdoc !== undefined && contractObject.userdoc.methods[funSignFormat] !== undefined
@@ -116,7 +122,7 @@ function ContractMenu(props: {
                                     }
                                 </Menu.SubMenu>
                                 <Menu.SubMenu
-                                    key={`${contractObject.contractName}-EventMenu`}
+                                    key={`${contractObject.contractName}-event`}
                                     title="事件查询"
                                     icon={<BarChartOutlined />}
                                 >
@@ -126,10 +132,9 @@ function ContractMenu(props: {
                                         }).map((abi, index) => {
                                             return (
                                                 <Menu.Item
-                                                    key={`${contractObject.contractName}-EventMenu-${abi.name}-${index}`}
-                                                    onClick={(_) => {
-                                                        props.onSelectedABI(contractObject, abi);
-                                                    }}>
+                                                    // key={`${contractObject.contractName}-event-${index}`}
+                                                    key={web3.eth.abi.encodeFunctionSignature(abi)}
+                                                    onClick={props.onSelected}>
                                                     {
                                                         abi.name
                                                     }
@@ -144,17 +149,18 @@ function ContractMenu(props: {
                 }
                 {
                     <Menu.Item
-                        key='Upload'
+                        key='upload'
                         icon={<UploadOutlined />}
-                        onClick={() => {
-                            props.onSelectedABI(undefined, undefined);
-                        }}
+                        onClick={props.onSelected}
                     >
                         Upload Contract
                     </Menu.Item>
                 }
+
             </Menu>
         </Layout.Sider>
+
+
     );
 }
 

@@ -18,7 +18,7 @@ interface TxCallingState {
 function ABIFunctionCallerView(props: {
     web3: Web3,
     abi: AbiItem,
-    contractAddress: string,
+    contractAddress?: string,
     devdoc?: NatspecExt.DevMethodDoc,
     userdoc?: NatspecExt.UserMethodDoc,
     style?: React.CSSProperties,
@@ -68,8 +68,18 @@ function ABIFunctionCallerView(props: {
     const isWriteFunction = ['nonpayable', 'payable'].includes(props.abi.stateMutability!.toString())
 
     function _send(fromData: any) {
+
         clearSendingState();
         clearCallingState();
+
+        if (props.contractAddress === undefined) {
+            setSendingState({
+                waitingResponse: false,
+                onError: new Error('当前连接的网络，并未部署当前合约的实例，请检查networks或者当前连接的网络是否正确。'),
+            });
+
+            return;
+        }
 
         setSendingState({ waitingResponse: true })
 
@@ -143,6 +153,14 @@ function ABIFunctionCallerView(props: {
         clearSendingState();
         clearCallingState();
 
+        if (props.contractAddress === undefined) {
+            setCallingState({
+                waitingResponse: false,
+                error: new Error('当前连接的网络，并未部署当前合约的实例，请检查networks或者当前连接的网络是否正确。'),
+            })
+            return;
+        }
+
         setCallingState({
             waitingResponse: true,
         });
@@ -212,11 +230,12 @@ function ABIFunctionCallerView(props: {
                 <Form
                     form={form}
                     layout="vertical"
-                    onFinish={(data) => {
-                        isSendCommit
-                            ? _send(data)
-                            : _call(data)
-                    }}
+                    onFinish={
+                        (data) => {
+                            isSendCommit
+                                ? _send(data)
+                                : _call(data)
+                        }}
                 >
                     {
                         props.abi.inputs === undefined || props.abi.inputs?.length <= 0
