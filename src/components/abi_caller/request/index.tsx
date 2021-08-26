@@ -1,6 +1,5 @@
 import { Card, Space, Spin } from 'antd';
 import ReactJson from 'react-json-view';
-import '../index'
 
 export interface TxSendingState {
     waitingResponse: boolean;

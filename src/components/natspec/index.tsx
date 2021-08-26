@@ -71,6 +71,8 @@ export function bindInputs(abi: AbiItem, fromData: any[], doc?: DevMethodDoc): a
     // 参数的类型列表
     const binded: Array<any> = [];
 
+    console.log(fromData);
+
     abi.inputs?.forEach((input, index) => {
         // 获取函数的extDesc对象
         const secondaryType = matchingTypeDescription(doc.params[input.name])?.type;
@@ -78,9 +80,7 @@ export function bindInputs(abi: AbiItem, fromData: any[], doc?: DevMethodDoc): a
 
         if (input.type.endsWith('[]')) {
             // 只需要转换$amount类型
-            if (!typeEncode.includes('$amount:')) {
-                binded.push((fromData[index] as string).split('\n'))
-            } else {
+            if (typeEncode.includes('$amount:')) {
                 const splited = typeEncode.split(':');
                 if (splited.length !== 2) {
                     throw Error(`无效的次要类型定义"${typeEncode}"在"${input.name}"中，请检查源代码natspec风格注释的[次要类型定义符](在不确定类型的情况下发送交易会导致严重的数据问题).`);
@@ -90,11 +90,12 @@ export function bindInputs(abi: AbiItem, fromData: any[], doc?: DevMethodDoc): a
                     (fromData[index] as string).split('\n').map((value) => toWei(value, splited[1] as Unit))
                 )
             }
+            else {
+                binded.push((fromData[index] as string).split('\n'))
+            }
         } else {
             // 只需要转换$amount类型
-            if (!typeEncode.includes('$amount:')) {
-                binded.push(fromData[index])
-            } else {
+            if (typeEncode.includes('$amount:')) {
                 const splited = typeEncode.split(':');
                 if (splited.length !== 2) {
                     throw Error(`无效的次要类型定义"${typeEncode}"在"${input.name}"中，请检查源代码natspec风格注释的[次要类型定义符](在不确定类型的情况下发送交易会导致严重的数据问题).`);
@@ -102,9 +103,17 @@ export function bindInputs(abi: AbiItem, fromData: any[], doc?: DevMethodDoc): a
 
                 binded.push(toWei(fromData[index], splited[1] as Unit))
             }
+            // 处理bool类型
+            else if (input.type === "bool") {
+                binded.push((fromData[index] as string).toLowerCase() === 'true' ? true : false)
+            }
+            else {
+                binded.push(fromData[index])
+            }
         }
     });
 
+    console.log(binded);
     return binded;
 }
 
