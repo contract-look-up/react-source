@@ -10,6 +10,7 @@ import {
     BarChartOutlined,
     UserOutlined,
     UploadOutlined,
+    SettingFilled,
 } from '@ant-design/icons';
 
 import * as utils from '../../utils'
@@ -50,8 +51,8 @@ function ContractMenu(props: {
                 type="primary"
                 icon={<UserOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            > 
-            {/* {
+            >
+                {/* {
                     ownerAddress === undefined
                         ? 'Connect Failed'
                         : ownerAddress.length <= 0
@@ -71,7 +72,7 @@ function ContractMenu(props: {
                 height: '100vh',
                 position: 'fixed',
                 left: 0,
-                flex:1
+                flex: 1
             }}
             collapsible={true}
             defaultCollapsed={true}
@@ -80,12 +81,12 @@ function ContractMenu(props: {
             <Menu
                 mode="inline"
                 theme="light"
-                style={{ height: '100%', borderRight: 1 }} 
+                style={{ height: '100%', borderRight: 1 }}
             >
                 {
                     props.contracts.map((contractObject, contractIndex) => {
                         return (
-                            <Menu.SubMenu 
+                            <Menu.SubMenu
                                 key={contractObject.contractName}
                                 icon={<ProfileFilled />}
                                 title={contractObject.contractName}>
