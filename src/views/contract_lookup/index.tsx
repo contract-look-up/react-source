@@ -1,13 +1,13 @@
-import Web3 from "web3";
-import "antd/dist/antd.css";
-import { useState } from "react";
+import Web3 from 'web3';
+import 'antd/dist/antd.css';
+import { useState } from 'react';
 import { Layout, Result } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
-import { FunctionContent } from "../content";
-import { ContractSetting } from "../contract_setting";
-import { CompiledContract } from "../../components/compile_contract";
-import { ContractImport } from "../contract_importer";
-import ContractMenu from "../../components/contract_menu";
+import { FunctionContent } from './content';
+import { ContractSetting } from "./contract_setting";
+import { CompiledContract } from '../../components';
+import { ContractImport } from "./contract_importer";
+import ContractMenu from "./contract_menu";
 
 import * as StateCreator from "./states";
 
@@ -34,7 +34,7 @@ function readContractAsync(file: any) {
     })
 }
 
-function HomeView() {
+export default function ContractLookupPage() {
     const web3 = new Web3((window as any).ethereum);
 
     const [contracts, setContracts] = useState<CompiledContract[]>([]);
@@ -200,5 +200,3 @@ function HomeView() {
             </Layout>
     )
 }
-
-export default HomeView;

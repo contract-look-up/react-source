@@ -10,7 +10,7 @@ import CreationInputElement from './inputs';
 import './index.scss'
 import './inputs'
 
-function ABIEventCallerView(props: {
+export function ABIEventCallerView(props: {
     web3: Web3,
     abi: AbiItem,
     contractAddress: string,
@@ -35,7 +35,7 @@ function ABIEventCallerView(props: {
     function doFetchLogs(values: any) {
         setWaitingResponse(true);
 
-        const filter: any = {}
+        const filter: any = { }
 
         props.abi.inputs?.filter(input => input.indexed)
             .forEach((input, i) => {
@@ -130,5 +130,3 @@ function ABIEventCallerView(props: {
         </div>
     )
 }
-
-export default ABIEventCallerView

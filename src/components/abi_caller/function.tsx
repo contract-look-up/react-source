@@ -15,7 +15,7 @@ interface TxCallingState {
     result?: any
 }
 
-function ABIFunctionCallerView(props: {
+export function ABIFunctionCallerView(props: {
     web3: Web3,
     abi: AbiItem,
     contractAddress?: string,
@@ -322,5 +322,3 @@ function ABIFunctionCallerView(props: {
         </div>
     )
 }
-
-export default ABIFunctionCallerView

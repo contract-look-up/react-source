@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Layout, Menu, Button } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
-
 import {
     ProfileFilled,
     AreaChartOutlined,
@@ -13,8 +12,8 @@ import {
     SettingFilled,
 } from '@ant-design/icons';
 
-import * as utils from '../../utils'
-import { CompiledContract } from '../compile_contract'
+import * as utils from '../../../utils'
+import { CompiledContract } from '../../../components'
 
 import './index.scss'
 
@@ -51,14 +50,13 @@ function ContractMenu(props: {
                 type="primary"
                 icon={<UserOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            > 
-            {/* {
+            > {
                     ownerAddress === undefined
                         ? 'Connect Failed'
                         : ownerAddress.length <= 0
                             ? 'Connectioning' :
                             `${ownerAddress.slice(0, 10)}...${ownerAddress.slice(ownerAddress.length - 10, ownerAddress.length)}`
-                } */}
+                }
             </Button>
         )
     }
@@ -72,11 +70,8 @@ function ContractMenu(props: {
                 height: '100vh',
                 position: 'fixed',
                 left: 0,
-                flex: 1
             }}
-            breakpoint="md"
         >
-            
             <MenuHeader />
             <Menu
                 mode="inline"

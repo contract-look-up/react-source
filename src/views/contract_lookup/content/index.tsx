@@ -1,11 +1,10 @@
 import Web3 from "web3";
 import "antd/dist/antd.css";
 import { Card, Layout, PageHeader } from 'antd';
-import * as utils from "../../utils"
+import * as utils from "../../../utils"
 import { AbiItem } from 'web3-utils';
-import { ABIFunctionCallerView, ABIEventCallerView } from "../../components/abi_caller";
-import { CompiledContract } from '../../components/compile_contract'
-import { SourceCodeCard } from "../../components/source_code";
+import { ABIEventCallerView, ABIFunctionCallerView, CompiledContract, SourceCodeCard } from "../../../components"
+
 import './index.scss';
 
 export function FunctionContent(props: {

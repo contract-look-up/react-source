@@ -1,7 +1,6 @@
 import "antd/dist/antd.css";
 import { Card, Layout, PageHeader, Table, Badge } from 'antd';
-import { CompiledContract } from '../../components/compile_contract'
-import { SourceCodeCard } from "../../components/source_code";
+import { CompiledContract, SourceCodeCard } from '../../../components';
 import { Descriptions } from 'antd';
 import moment from "moment";
 

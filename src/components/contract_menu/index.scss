@@ -1,10 +1,13 @@
-.menu-header {
-    display: flex;
-    flex-direction: column;
-    .logo {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background: aquamarine;
+@media (min-width: 1200px) {
+    .menu-header {
+        display: flex;
+        flex-direction: column;
+
+        .logo {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: aquamarine;
+        }
     }
 }
