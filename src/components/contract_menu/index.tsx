@@ -51,8 +51,8 @@ function ContractMenu(props: {
                 type="primary"
                 icon={<UserOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            >
-                {/* {
+            > 
+            {/* {
                     ownerAddress === undefined
                         ? 'Connect Failed'
                         : ownerAddress.length <= 0
@@ -74,9 +74,9 @@ function ContractMenu(props: {
                 left: 0,
                 flex: 1
             }}
-            collapsible={true}
-            defaultCollapsed={true}
+            breakpoint="md"
         >
+            
             <MenuHeader />
             <Menu
                 mode="inline"
