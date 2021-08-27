@@ -50,13 +50,7 @@ function ContractMenu(props: {
                 type="primary"
                 icon={<UserOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            > {
-                    ownerAddress === undefined
-                        ? 'Connect Failed'
-                        : ownerAddress.length <= 0
-                            ? 'Connectioning' :
-                            `${ownerAddress.slice(0, 10)}...${ownerAddress.slice(ownerAddress.length - 10, ownerAddress.length)}`
-                }
+            >
             </Button>
         )
     }
@@ -71,7 +65,7 @@ function ContractMenu(props: {
                 position: 'fixed',
                 left: 0,
             }}
-        >
+            breakpoint='md'>
             <MenuHeader />
             <Menu
                 mode="inline"
