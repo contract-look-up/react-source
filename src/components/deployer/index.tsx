@@ -1,7 +1,7 @@
 import Web3 from "web3";
 import "antd/dist/antd.css";
 import { Space, Layout, PageHeader, Descriptions, Collapse, message } from 'antd';
-import { ABIDeployCallerView, CompiledContract, SourceCodeCard } from "../../../components"
+import { ABIDeployCallerView, CompiledContract, SourceCodeCard } from ".."
 
 import moment from "moment";
 import copy from 'copy-to-clipboard';
@@ -13,6 +13,7 @@ import {
 
 export function Deployer(props: {
     contract: CompiledContract,
+    onDeployed: (contract: CompiledContract) => void,
 }) {
     const { contract } = props;
     const matadata = (contract as any).metadata !== undefined ? JSON.parse((contract as any).metadata) : undefined;
@@ -103,6 +104,7 @@ export function Deployer(props: {
                 style={{
                     paddingBottom: '50px'
                 }}
+                onDeployed={props.onDeployed}
             />
         </Layout.Content >
     )

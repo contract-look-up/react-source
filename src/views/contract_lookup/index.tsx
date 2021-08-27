@@ -6,7 +6,7 @@ import { MenuInfo } from 'rc-menu/lib/interface';
 import { FunctionContent } from './content';
 import { ContractSetting } from "./contract_setting";
 import { CompiledContract } from '../../components';
-import { ContractImport } from "./contract_importer";
+import { ContractImport } from "../contract_importer";
 import ContractMenu from "./contract_menu";
 
 import * as StateCreator from "./states";
@@ -127,20 +127,26 @@ export default function ContractLookupPage() {
             }
 
             case 'upload': {
-                return <ContractImport onDropContractFile={
-                    (e) => {
-                        let files = e.dataTransfer.files;
-                        let readers = [];
-
-                        for (let i = 0; i < files.length; i++) {
-                            readers.push(readContractAsync(files[i]))
+                return <ContractImport
+                    onCheckedCompiledContract={
+                        contract => {
+                            setContracts(contracts.concat(contract));
                         }
-
-                        Promise.all(readers).then(dropedContract => {
-                            setContracts(contracts.concat(dropedContract));
-                        })
                     }
-                } />
+                    onDropContractFile={
+                        (e) => {
+                            let files = e.dataTransfer.files;
+                            let readers = [];
+
+                            for (let i = 0; i < files.length; i++) {
+                                readers.push(readContractAsync(files[i]))
+                            }
+
+                            Promise.all(readers).then(dropedContract => {
+                                setContracts(contracts.concat(dropedContract));
+                            })
+                        }
+                    } />
             }
 
             default: {

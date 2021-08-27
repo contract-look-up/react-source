@@ -9,6 +9,7 @@ import './inputs'
 import CreationInputElement from './inputs';
 import { TxSendingState, RequestDisplay } from './request';
 import { CompiledContract } from '../compile_contract';
+import { template } from '@babel/core';
 
 
 export function ABIDeployCallerView(props: {
@@ -16,9 +17,11 @@ export function ABIDeployCallerView(props: {
     compileContract: CompiledContract,
     style?: React.CSSProperties,
     className?: string
+    onDeployed: (contract: CompiledContract) => void,
 }) {
     const [form] = Form.useForm();
     const [originContact, setOriginContract] = useState<CompiledContract>();
+    const [deployedContract, setDeployedContract] = useState<CompiledContract>();
 
     const [sendingState, setSendingState] = useState<TxSendingState>({
         waitingResponse: false,
@@ -36,11 +39,10 @@ export function ABIDeployCallerView(props: {
         })
     }
 
-    let isSendCommit = false
-
     if (originContact !== props.compileContract) {
         form.resetFields();
         setOriginContract(props.compileContract);
+        setDeployedContract(undefined);
         clearSendingState();
     }
 
@@ -93,6 +95,17 @@ export function ABIDeployCallerView(props: {
                                         waitingResponse: false,
                                         onHash: onHash,
                                         onReceipt: receipt,
+                                    })
+
+                                    props.web3.eth.net.getId().then(networkid => {
+                                        const contractInstance = JSON.parse(JSON.stringify(props.compileContract)) as CompiledContract;
+                                        contractInstance.contractName = props.compileContract.contractName;
+                                        contractInstance.networks = { }
+                                        contractInstance.networks[networkid.toString()] = {
+                                            address: receipt.contractAddress!
+                                        }
+
+                                        setDeployedContract(contractInstance);
                                     })
                                 })
                                 .on("error", error => {
@@ -153,7 +166,9 @@ export function ABIDeployCallerView(props: {
                         }}>
                             <Button
                                 type="primary"
-                                danger
+                                danger={
+                                    deployedContract === undefined
+                                }
                                 size="large"
                                 htmlType="submit"
                                 loading={sendingState.waitingResponse}
@@ -161,10 +176,14 @@ export function ABIDeployCallerView(props: {
                                     width: "100%",
                                 }}
                                 onClick={() => {
-                                    isSendCommit = true
+                                    if (deployedContract !== undefined) {
+                                        props.onDeployed(deployedContract);
+                                    }
                                 }}
                             >
-                                Deploy
+                                {
+                                    deployedContract === undefined ? "Deploy" : "Done"
+                                }
                             </Button>
                         </div>
                     </Form.Item>

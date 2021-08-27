@@ -3,7 +3,6 @@ import { useState } from 'react';
 import { Layout, Menu, Button } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
-
 import {
     ProfileFilled,
     AreaChartOutlined,
@@ -51,14 +50,7 @@ function ContractMenu(props: {
                 type="primary"
                 icon={<UserOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            > 
-            {/* {
-                    ownerAddress === undefined
-                        ? 'Connect Failed'
-                        : ownerAddress.length <= 0
-                            ? 'Connectioning' :
-                            `${ownerAddress.slice(0, 10)}...${ownerAddress.slice(ownerAddress.length - 10, ownerAddress.length)}`
-                } */}
+            >
             </Button>
         )
     }
@@ -76,7 +68,7 @@ function ContractMenu(props: {
             }}
             breakpoint="md"
         >
-            
+
             <MenuHeader />
             <Menu
                 mode="inline"
@@ -152,12 +144,13 @@ function ContractMenu(props: {
                     <Menu.Item
                         key='upload'
                         icon={<UploadOutlined />}
-                        onClick={props.onSelected}
+                        onClick={
+                            props.onSelected
+                        }
                     >
-                        Upload Contract
+                        Connection Contract
                     </Menu.Item>
                 }
-
             </Menu>
         </Layout.Sider>
 
