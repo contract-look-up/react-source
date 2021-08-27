@@ -6,10 +6,10 @@ const BasicRoute = () => (
     <HashRouter>
         <Switch>
             <Route exact path="/">
-                <Redirect to="/contract_lookup" />
+                <Redirect to="/lookup" />
             </Route>
-            <Route exact path="/contract_lookup" component={ContractLookupPage} />
-            <Route exact path="/token_tools" component={TokenToolsPage} />
+            <Route exact path="/lookup" component={ContractLookupPage} />
+            <Route exact path="/tools" component={TokenToolsPage} />
         </Switch>
     </HashRouter>
 );

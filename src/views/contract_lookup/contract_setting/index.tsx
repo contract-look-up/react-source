@@ -103,7 +103,7 @@ export function ContractSetting(params: {
                 </Descriptions.Item>
                 <Descriptions.Item label="UpdateTime">
                     {
-                        contract.compiler?.version === undefined ? "None" : moment(contract.updatedAt).format('YYYY-MM-DD hh:mm:ss')
+                        contract.compiler?.version === undefined ? "None" : moment(contract.updatedAt).format('YYYY-MM-DD HH:mm:ss')
                     }
                 </Descriptions.Item>
             </Descriptions>
