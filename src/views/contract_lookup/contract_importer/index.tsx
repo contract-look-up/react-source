@@ -1,13 +1,16 @@
 import "antd/dist/antd.css";
-import { Row, Button } from 'antd';
+import { Row, Button, Modal } from 'antd';
 import Dragger from "antd/lib/upload/Dragger";
 import './index.scss';
 
 import {
     ImportOutlined,
     PlusCircleOutlined,
-    UploadOutlined
+    UploadOutlined,
+    SubnodeOutlined
 } from '@ant-design/icons';
+
+
 
 export function ContractImport(params: {
     onDropContractFile: (e: any) => void
@@ -31,6 +34,7 @@ export function ContractImport(params: {
             <Row className="action-button-group">
                 <Button ghost disabled className="action" type="primary" size="large" icon={<PlusCircleOutlined />} >通过模版ABI创建(暂未实现)</Button>
                 <Button ghost disabled className="action" type="primary" size="large" icon={<ImportOutlined />}>通过URL导入(暂未实现)</Button>
+                <Button className="action" type="primary" size="large" icon={<SubnodeOutlined />}>根据模版创部署新合约实例</Button>
             </Row>
         </Dragger>
     )

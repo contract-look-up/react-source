@@ -8,4 +8,5 @@ export interface CompiledContract extends NatspecDocs {
     source?: any,
     updatedAt?: string,
     compiler?: any,
+    bytecode?: string,
 }

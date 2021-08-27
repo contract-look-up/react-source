@@ -1638,6 +1638,13 @@
     "@types/yargs" "^16.0.0"
     chalk "^4.0.0"
 
+"@koale/useworker@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.nlark.com/@koale/useworker/download/@koale/useworker-4.0.2.tgz#cb540a2581cd6025307c3ca6685bc60748773e58"
+  integrity sha1-y1QKJYHNYCUwfDymaFvGB0h3Plg=
+  dependencies:
+    dequal "^1.0.0"
+
 "@nodelib/fs.scandir@2.1.4":
   version "2.1.4"
   resolved "https://registry.yarnpkg.com/@nodelib/fs.scandir/-/fs.scandir-2.1.4.tgz#d4b3549a5db5de2683e0c1071ab4f140904bbf69"
@@ -2555,6 +2562,13 @@ aggregate-error@^3.0.0:
   dependencies:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
+
+ajax-caching@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.nlark.com/ajax-caching/download/ajax-caching-0.3.0.tgz#351e7be8dc0601e962b2699843da6b72fa045e79"
+  integrity sha1-NR576NwGAelismmYQ9prcvoEXnk=
+  dependencies:
+    kv-idb "^1.1.0"
 
 ajv-errors@^1.0.0:
   version "1.0.1"
@@ -4150,7 +4164,7 @@ copy-descriptor@^0.1.0:
   resolved "https://registry.yarnpkg.com/copy-descriptor/-/copy-descriptor-0.1.1.tgz#676f6eb3c39997c2ee1ac3a924fd6124748f578d"
   integrity sha1-Z29us8OZl8LuGsOpJP1hJHSPV40=
 
-copy-to-clipboard@^3.2.0:
+copy-to-clipboard@^3.2.0, copy-to-clipboard@^3.3.1:
   version "3.3.1"
   resolved "https://registry.nlark.com/copy-to-clipboard/download/copy-to-clipboard-3.3.1.tgz#115aa1a9998ffab6196f93076ad6da3b913662ae"
   integrity sha1-EVqhqZmP+rYZb5MHatbaO5E2Yq4=
@@ -4735,6 +4749,11 @@ depd@~1.1.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/depd/-/depd-1.1.2.tgz#9bcd52e14c097763e749b274c4346ed2e560b5a9"
   integrity sha1-m81S4UwJd2PnSbJ0xDRu0uVgtak=
+
+dequal@^1.0.0:
+  version "1.0.1"
+  resolved "https://registry.npm.taobao.org/dequal/download/dequal-1.0.1.tgz#dbbf9795ec626e9da8bd68782f4add1d23700d8b"
+  integrity sha1-27+Xlexibp2ovWh4L0rdHSNwDYs=
 
 des.js@^1.0.0:
   version "1.0.1"
@@ -8158,6 +8177,11 @@ klona@^2.0.4:
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/klona/-/klona-2.0.4.tgz#7bb1e3affb0cb8624547ef7e8f6708ea2e39dfc0"
   integrity sha512-ZRbnvdg/NxqzC7L9Uyqzf4psi1OM4Cuc+sJAkQPjO6XkQIJTNbfK2Rsmbw8fx1p2mkZdp2FZYo2+LwXYY/uwIA==
+
+kv-idb@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.nlark.com/kv-idb/download/kv-idb-1.1.0.tgz#5773dc7c7df39f4a6470fb708607babe04b02427"
+  integrity sha1-V3PcfH3zn0pkcPtwhge6vgSwJCc=
 
 language-subtag-registry@~0.3.2:
   version "0.3.21"
@@ -12290,6 +12314,28 @@ sockjs@^0.3.21:
     faye-websocket "^0.11.3"
     uuid "^3.4.0"
     websocket-driver "^0.7.4"
+
+solc-import@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.nlark.com/solc-import/download/solc-import-0.0.2.tgz#67bcc8be970d999fc8d92e076d1069c8c732d681"
+  integrity sha1-Z7zIvpcNmZ/I2S4HbRBpyMcy1oE=
+
+solc-version@^0.3.0:
+  version "0.3.1"
+  resolved "https://registry.nlark.com/solc-version/download/solc-version-0.3.1.tgz#af65756dfaa5300d9b31731e13ae5a7c2d86716b"
+  integrity sha1-r2V1bfqlMA2bMXMeE65afC2GcWs=
+  dependencies:
+    ajax-caching "^0.3.0"
+    lodash "^4.17.19"
+
+solcjs-core@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.nlark.com/solcjs-core/download/solcjs-core-0.7.0.tgz#3b72a5ede4e00369449e33f71b8ea09e919c08de"
+  integrity sha1-O3Kl7eTgA2lEnjP3G46gnpGcCN4=
+  dependencies:
+    ajax-caching "^0.3.0"
+    solc-import "^0.0.2"
+    solc-version "^0.3.0"
 
 sort-keys@^1.0.0:
   version "1.1.2"

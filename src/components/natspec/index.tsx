@@ -45,7 +45,6 @@ export interface ExtDescription {
 
 // 获取在注释中定义的类型信息,如 $number, $timestemp 等
 export function matchingTypeDescription(content?: string): ExtDescription | undefined {
-
     if (content === undefined) {
         return undefined;
     }
@@ -64,7 +63,7 @@ export function matchingTypeDescription(content?: string): ExtDescription | unde
 export function bindInputs(abi: AbiItem, fromData: any[], doc?: DevMethodDoc): any[] {
 
     // 没有定义Doc的情况，直接返回原值
-    if (doc === undefined) {
+    if (doc?.params === undefined) {
         return abi.inputs?.map((_, index) => fromData[index])!
     }
 
@@ -113,7 +112,6 @@ export function bindInputs(abi: AbiItem, fromData: any[], doc?: DevMethodDoc): a
         }
     });
 
-    console.log(binded);
     return binded;
 }
 
@@ -124,7 +122,7 @@ export function bindLogs(abi: AbiItem, fromData: { [key: string]: any }, doc?: D
     }
 
     // 参数的类型列表
-    const encodeObject: any = {}
+    const encodeObject: any = { }
 
     abi.inputs?.forEach((input, index) => {
         // 获取函数的extDesc对象
@@ -164,7 +162,7 @@ export function bindLogs(abi: AbiItem, fromData: { [key: string]: any }, doc?: D
 
 export function bindOutputs(abi: AbiItem, fromData: { [key: string]: any }, doc?: DevMethodDoc): { [key: string]: any } {
     // 没有定义Doc的情况，直接返回原值
-    if (doc === undefined) {
+    if (doc?.returns === undefined) {
         return fromData;
     }
 
