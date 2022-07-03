@@ -1,13 +1,11 @@
-import Web3 from "web3";
 import "antd/dist/antd.css";
-import { useState, useEffect } from "react";
-import { Table, Input, Modal, Select, Button, Space } from 'antd';
+import { useState } from "react";
+import { Table, Modal, Button, Space } from 'antd';
 import { CompiledContract } from "../../components";
 import { Deployer } from "../../components/deployer";
 
 import './index.scss';
 
-const { Option } = Select;
 const templates: Array<CompiledContract> = [
     require('../../assets/contract-templates/build/contracts/ERC20TemplateToken.json'),
 ]
@@ -44,7 +42,7 @@ const DeployInstanceByTemplate = (props: {
         </Space>
 
     const handleOk = (e: any) => {
-        if (step == 'select_template') {
+        if (step === 'select_template') {
             setStep('deploy_infomation')
         }
     };
@@ -53,13 +51,11 @@ const DeployInstanceByTemplate = (props: {
         <Modal
             className="select-template"
             width={
-                step == 'select_template' ? '60%' : '80%'
+                step === 'select_template' ? '60%' : '80%'
             }
             title="通过模版ABI创建"
             visible={props.visible}
-            // confirmLoading={confirmLoading}
-            // maskClosable={false}
-            centered={step == 'select_template'}
+            centered={step === 'select_template'}
             destroyOnClose={true}
             onOk={handleOk}
             onCancel={handleCancel}

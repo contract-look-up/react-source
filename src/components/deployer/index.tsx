@@ -8,7 +8,6 @@ import copy from 'copy-to-clipboard';
 
 import {
     CopyOutlined,
-    SettingOutlined
 } from '@ant-design/icons';
 
 export function Deployer(props: {

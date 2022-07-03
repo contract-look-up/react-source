@@ -1,7 +1,8 @@
 import { AbiItem } from 'web3-utils';
 import { CompiledContract } from "../../components/compile_contract";
+import { TransferGroup } from '../../components/structs/TransferGroup';
 
-export type Types = 'setting' | 'upload' | 'method';
+export type Types = 'setting' | 'upload' | 'method' | 'trasnfer';
 
 // 抽象
 export interface ContentViewState {
@@ -19,6 +20,11 @@ export interface ContractMethodState extends ContentViewState {
     abi: AbiItem
 }
 
+// 批量装张页面
+export interface TransferGroupState extends ContentViewState {
+    group: TransferGroup
+}
+
 export const SettingState = (contract: CompiledContract): ContractSettingState => {
     return {
         type: 'setting',
@@ -31,6 +37,13 @@ export const ABIState = (contract: CompiledContract, abi: AbiItem): ContractMeth
         type: 'method',
         contract: contract,
         abi: abi,
+    }
+}
+
+export const TransferState = (group: TransferGroup): TransferGroupState => {
+    return {
+        type: 'trasnfer',
+        group: group
     }
 }
 

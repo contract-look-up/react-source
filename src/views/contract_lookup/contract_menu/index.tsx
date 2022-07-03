@@ -7,18 +7,21 @@ import {
     ProfileFilled,
     AreaChartOutlined,
     BarChartOutlined,
-    UserOutlined,
+    HomeOutlined,
     UploadOutlined,
     SettingFilled,
+    UngroupOutlined
 } from '@ant-design/icons';
 
 import * as utils from '../../../utils'
 import { CompiledContract } from '../../../components'
 
 import './index.scss'
+import { TransferGroup } from "../../../components/structs/TransferGroup";
 
 function ContractMenu(props: {
     contracts: CompiledContract[],
+    transferGroups: TransferGroup[],
     onSelected: MenuClickEventHandler,
     onDropFile: (e: any) => void,
 }) {
@@ -48,7 +51,7 @@ function ContractMenu(props: {
                 }}
                 size="middle"
                 type="primary"
-                icon={<UserOutlined />}
+                icon={<HomeOutlined />}
                 danger={ownerAddress !== undefined && ownerAddress.length <= 0}
             >
             </Button>
@@ -66,7 +69,7 @@ function ContractMenu(props: {
                 left: 0,
             }}
             breakpoint='md'>
-            <MenuHeader />
+            {/* <MenuHeader /> */}
             <Menu
                 mode="inline"
                 theme="light"
@@ -84,7 +87,7 @@ function ContractMenu(props: {
                                     onClick={props.onSelected}
                                     icon={<SettingFilled />}
                                 >
-                                    合约信息
+                                    合约信息
                                 </Menu.Item>
                                 <Menu.SubMenu
                                     key={`${contractObject.contractName}-function`}
@@ -138,19 +141,30 @@ function ContractMenu(props: {
                     })
                 }
                 {
+                    props.transferGroups.map((groupObject, groupIndex) => {
+                        return (
+                            <Menu.Item
+                                key={`trasnfer-groups-${groupIndex}`}
+                                icon={<UngroupOutlined />}
+                                onClick={props.onSelected}
+                            >
+                                {groupObject.name}
+                            </Menu.Item>
+                        )
+                    })
+                }
+                {
                     <Menu.Item
                         key='upload'
                         icon={<UploadOutlined />}
                         onClick={props.onSelected}
                     >
-                        Upload Contract
+                        Upload
                     </Menu.Item>
                 }
 
             </Menu>
         </Layout.Sider>
-
-
     );
 }
 

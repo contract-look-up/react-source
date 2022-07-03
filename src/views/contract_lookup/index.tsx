@@ -6,10 +6,13 @@ import { MenuInfo } from 'rc-menu/lib/interface';
 import { FunctionContent } from './content';
 import { ContractSetting } from "./contract_setting";
 import { CompiledContract } from '../../components';
+import { TransferGroup } from '../../components/structs/TransferGroup';
 import { ContractImport } from "../contract_importer";
 import ContractMenu from "./contract_menu";
+import * as xlsx from 'xlsx';
 
 import * as StateCreator from "./states";
+import { GroupTransfer } from './group_transfer';
 
 function readContractAsync(file: any) {
     return new Promise<CompiledContract>((resolve, reject) => {
@@ -34,9 +37,38 @@ function readContractAsync(file: any) {
     })
 }
 
+function readExeclAsync(file: any) {
+    return new Promise<TransferGroup>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            const workbook = xlsx.read(event.target!.result, { type: 'binary' });
+
+            let data: any[] = [];
+            for (const sheet in workbook.Sheets) {
+                if (workbook.Sheets.hasOwnProperty(sheet)) {
+                    data = data.concat(xlsx.utils.sheet_to_json(workbook.Sheets[sheet]));
+                }
+                break;
+            }
+
+            return resolve({
+                name: file.name as string,
+                datas: data.map(function (row) {
+                    return {
+                        address: row[Object.keys(row)[0]] as string,
+                        amount: row[Object.keys(row)[1]] as number
+                    }
+                })
+            })
+        }
+        reader.readAsBinaryString(file);
+    })
+}
+
 export default function ContractLookupPage() {
     const web3 = new Web3((window as any).ethereum);
 
+    const [transferGroups, setTransferGroups] = useState<TransferGroup[]>([]);
     const [contracts, setContracts] = useState<CompiledContract[]>([]);
     const [netWorkID, setNetWorkID] = useState<number>();
     const [contentState, setContetState] = useState<StateCreator.ContentViewState>(StateCreator.UploadState());
@@ -53,9 +85,16 @@ export default function ContractLookupPage() {
             return;
         }
 
+        // 打开了批量转账列表
+        if (paths[0].toLocaleLowerCase().startsWith('trasnfer-groups-')) {
+            let index = parseInt(paths[0].substring('trasnfer-groups-'.length));
+            setContetState(StateCreator.TransferState(transferGroups[index]));
+            return
+        }
+
         switch (paths.length) {
             case 1: {
-                switch (paths[0]) {
+                switch (paths[0].toLowerCase()) {
                     case 'upload': {
                         setContetState(StateCreator.UploadState());
                         break;
@@ -126,6 +165,14 @@ export default function ContractLookupPage() {
                 )
             }
 
+            case 'trasnfer': {
+                return (
+                    <GroupTransfer
+                        group={(contentState as StateCreator.TransferGroupState).group!}
+                    />
+                )
+            }
+
             case 'upload': {
                 return <ContractImport
                     onCheckedCompiledContract={
@@ -133,17 +180,27 @@ export default function ContractLookupPage() {
                             setContracts(contracts.concat(contract));
                         }
                     }
-                    onDropContractFile={
+                    onDropFile={
                         (e) => {
                             let files = e.dataTransfer.files;
-                            let readers = [];
+                            let jsonReaders = [];
+                            let xlsxReaders = [];
 
                             for (let i = 0; i < files.length; i++) {
-                                readers.push(readContractAsync(files[i]))
+                                let fileName = (files[i].name as string)
+                                if (fileName.endsWith("json")) {
+                                    jsonReaders.push(readContractAsync(files[i]))
+                                } else if (fileName.endsWith("xlsx")) {
+                                    xlsxReaders.push(readExeclAsync(files[i]))
+                                }
                             }
 
-                            Promise.all(readers).then(dropedContract => {
+                            Promise.all(jsonReaders).then(dropedContract => {
                                 setContracts(contracts.concat(dropedContract));
+                            })
+
+                            Promise.all(xlsxReaders).then(groups => {
+                                setTransferGroups(transferGroups.concat(groups));
                             })
                         }
                     } />
@@ -172,6 +229,7 @@ export default function ContractLookupPage() {
             : <Layout>
                 <ContractMenu
                     contracts={contracts}
+                    transferGroups={transferGroups}
                     onSelected={onMenuSelect}
                     onDropFile={
                         (e) => {

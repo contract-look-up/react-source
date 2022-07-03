@@ -60,7 +60,7 @@ const CreateInstanceByTemplate = (props: {
                     }
 
                     template.contractName = formData.contract_name;
-                    template.networks = { }
+                    template.networks = {}
                     template.networks[networkid.toString()] = {
                         address: formData.contract_address
                     }

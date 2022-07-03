@@ -1,16 +1,12 @@
 import Web3 from 'web3';
 import { useState } from 'react';
-import { AbiItem } from 'web3-utils';
 import { Form, Button, Card } from 'antd';
 import * as NatspecExt from '../natspec'
-import { ResponseDisplay } from './response'
 import './index.scss'
 import './inputs'
 import CreationInputElement from './inputs';
 import { TxSendingState, RequestDisplay } from './request';
 import { CompiledContract } from '../compile_contract';
-import { template } from '@babel/core';
-
 
 export function ABIDeployCallerView(props: {
     web3: Web3,

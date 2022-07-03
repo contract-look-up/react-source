@@ -87,7 +87,7 @@ function ContractMenu(props: {
                                     onClick={props.onSelected}
                                     icon={<SettingFilled />}
                                 >
-                                    合约信息
+                                    合约信息
                                 </Menu.Item>
                                 <Menu.SubMenu
                                     key={`${contractObject.contractName}-function`}
