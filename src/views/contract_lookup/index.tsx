@@ -1,7 +1,7 @@
 import Web3 from 'web3';
 import 'antd/dist/antd.css';
-import { useState } from 'react';
-import { Layout, Result } from 'antd';
+import { useCallback, useState } from 'react';
+import { Layout, Result, notification } from 'antd';
 import { MenuInfo } from 'rc-menu/lib/interface';
 import { FunctionContent } from './content';
 import { ContractSetting } from "./contract_setting";
@@ -13,6 +13,7 @@ import * as xlsx from 'xlsx';
 
 import * as StateCreator from "./states";
 import { GroupTransfer } from './group_transfer';
+const AbiCoder = require('web3-eth-abi');
 
 function readContractAsync(file: any) {
     return new Promise<CompiledContract>((resolve, reject) => {
@@ -37,6 +38,13 @@ function readContractAsync(file: any) {
     })
 }
 
+const openNotificationError = (message: string) => {
+    notification['error']({
+        message: '数据校验错误',
+        description: message
+    });
+};
+
 function readExeclAsync(file: any) {
     return new Promise<TransferGroup>((resolve, reject) => {
         const reader = new FileReader();
@@ -50,6 +58,15 @@ function readExeclAsync(file: any) {
                 }
                 break;
             }
+
+            let floatNumberRegex = /^[1-9]\d*\.\d*|0\.\d*[1-9]\d*$/
+            data.forEach((row, rowIndex) => {
+                let amount = row[Object.keys(row)[1]];
+                if (typeof (amount) !== 'number' && !floatNumberRegex.test(amount.toString())) {
+                    openNotificationError(`在校验文件"${file.name}"\n\r第"${rowIndex + 1}"行数据出，出现了无效的数值\n\r"${amount.toString()}"\n\r这会导致严重后果,请检查和纠正数据后在尝试进行任务.`)
+                    return reject(undefined)
+                }
+            })
 
             return resolve({
                 name: file.name as string,
@@ -66,20 +83,27 @@ function readExeclAsync(file: any) {
 }
 
 export default function ContractLookupPage() {
-    const web3 = new Web3((window as any).ethereum);
-
     const [transferGroups, setTransferGroups] = useState<TransferGroup[]>([]);
     const [contracts, setContracts] = useState<CompiledContract[]>([]);
     const [netWorkID, setNetWorkID] = useState<number>();
     const [contentState, setContetState] = useState<StateCreator.ContentViewState>(StateCreator.UploadState());
 
-    web3.eth.net.getId().then((netID) => {
-        setNetWorkID(netID);
-    });
+    const web3 = useCallback((): Web3 | undefined => {
+        if ((window as any).web3) {
+            return (window as any).web3 as Web3
+        }
+
+        if ((window as any).ethereum) {
+            (window as any).web3 = new Web3((window as any).ethereum);
+            (window as any).web3.eth.net.getId().then(setNetWorkID)
+            return (window as any).web3 as Web3
+        } else {
+            return undefined
+        }
+    }, [])
 
     // 主菜单点击
     function onMenuSelect(info: MenuInfo): void {
-
         const paths = info.keyPath
         if (paths.length <= 0) {
             return;
@@ -125,7 +149,7 @@ export default function ContractLookupPage() {
                             paths[1] === `${contract.contractName}-event`
                         )
                     ) {
-                        const abi = contract.abi?.find((a) => (a.type === 'function' || a.type === 'event') && web3.eth.abi.encodeFunctionSignature(a) === paths[0])
+                        const abi = contract.abi?.find((a) => (a.type === 'function' || a.type === 'event') && AbiCoder.encodeFunctionSignature(a) === paths[0])
                         if (abi !== undefined) {
                             setContetState(StateCreator.ABIState(
                                 contract,
@@ -140,11 +164,6 @@ export default function ContractLookupPage() {
     }
 
     function RenderContentView() {
-
-        if (netWorkID === undefined) {
-            return null
-        }
-
         switch (contentState.type) {
             case 'method': {
                 return (
@@ -152,6 +171,7 @@ export default function ContractLookupPage() {
                         contract={(contentState as StateCreator.ContractMethodState).contract!}
                         abi={(contentState as StateCreator.ContractMethodState).abi!}
                         networkID={netWorkID}
+                        web3={web3()}
                     />
                 )
             }
@@ -224,43 +244,42 @@ export default function ContractLookupPage() {
     }
 
     return (
-        netWorkID === undefined
-            ? null
-            : <Layout>
-                <ContractMenu
-                    contracts={contracts}
-                    transferGroups={transferGroups}
-                    onSelected={onMenuSelect}
-                    onDropFile={
-                        (e) => {
-                            let files = e.dataTransfer.files;
-                            let readers = [];
+        <Layout>
 
-                            for (let i = 0; i < files.length; i++) {
-                                readers.push(readContractAsync(files[i]))
-                            }
+            <ContractMenu
+                contracts={contracts}
+                transferGroups={transferGroups}
+                onSelected={onMenuSelect}
+                onDropFile={
+                    (e) => {
+                        let files = e.dataTransfer.files;
+                        let readers = [];
 
-                            Promise.all(readers).then(dropedContract => {
-                                setContracts(contracts.concat(dropedContract));
-                            })
+                        for (let i = 0; i < files.length; i++) {
+                            readers.push(readContractAsync(files[i]))
                         }
+
+                        Promise.all(readers).then(dropedContract => {
+                            setContracts(contracts.concat(dropedContract));
+                        })
                     }
-                />
-                <Layout className="site-layout">
-                    <Layout.Sider
-                        width="80vw"
-                        style={{
-                            marginLeft: '20vw',
-                            overflow: 'auto',
-                            position: 'fixed',
-                            width: '100%',
-                            height: '100%',
-                            left: 0,
-                        }}
-                    >
-                        <RenderContentView />
-                    </Layout.Sider>
-                </Layout>
+                }
+            />
+            <Layout className="site-layout">
+                <Layout.Sider
+                    width="80vw"
+                    style={{
+                        marginLeft: '20vw',
+                        overflow: 'auto',
+                        position: 'fixed',
+                        width: '100%',
+                        height: '100%',
+                        left: 0,
+                    }}
+                >
+                    <RenderContentView />
+                </Layout.Sider>
             </Layout>
+        </Layout>
     )
 }

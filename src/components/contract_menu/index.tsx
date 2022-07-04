@@ -1,13 +1,10 @@
-import Web3 from "web3";
-import { useState } from 'react';
-import { Layout, Menu, Button } from 'antd';
+import { Layout, Menu } from 'antd';
 import { MenuClickEventHandler } from 'rc-menu/lib/interface';
 
 import {
     ProfileFilled,
     AreaChartOutlined,
     BarChartOutlined,
-    UserOutlined,
     UploadOutlined,
     SettingFilled,
 } from '@ant-design/icons';
@@ -17,44 +14,13 @@ import { CompiledContract } from '../compile_contract'
 
 import './index.scss'
 
+const AbiCoder = require('web3-eth-abi');
+
 function ContractMenu(props: {
     contracts: CompiledContract[],
     onSelected: MenuClickEventHandler,
     onDropFile: (e: any) => void,
 }) {
-    const web3 = new Web3((window as any).ethereum);
-
-    const [ownerAddress, setOwnerAddress] = useState<string | undefined>("");
-
-    try {
-        (web3.currentProvider as any).sendAsync({
-            method: "eth_requestAccounts"
-        }, (error: Error, response: any) => {
-            if (error == null) {
-                setOwnerAddress(response.result[0]);
-                return;
-            }
-        })
-    } catch (e) {
-        setOwnerAddress(undefined)
-    }
-
-    function MenuHeader() {
-        return (
-            <Button
-                style={{
-                    width: '100%',
-                    height: '50px',
-                }}
-                size="middle"
-                type="primary"
-                icon={<UserOutlined />}
-                danger={ownerAddress !== undefined && ownerAddress.length <= 0}
-            >
-            </Button>
-        )
-    }
-
     return (
         <Layout.Sider
             width='20vw'
@@ -68,8 +34,6 @@ function ContractMenu(props: {
             }}
             breakpoint="md"
         >
-
-            <MenuHeader />
             <Menu
                 mode="inline"
                 theme="light"
@@ -97,11 +61,11 @@ function ContractMenu(props: {
                                     {
                                         contractObject.abi.filter((abiFun) => {
                                             return abiFun.type === 'function'
-                                        }).map((abi, index) => {
+                                        }).map((abi) => {
                                             const funSignFormat = utils.functionFormatStringFromABI(abi);
                                             return (
                                                 <Menu.Item
-                                                    key={web3.eth.abi.encodeFunctionSignature(abi)}
+                                                    key={AbiCoder.encodeFunctionSignature(abi)}
                                                     onClick={props.onSelected}
                                                 >
                                                     {
@@ -126,7 +90,7 @@ function ContractMenu(props: {
                                             return (
                                                 <Menu.Item
                                                     // key={`${contractObject.contractName}-event-${index}`}
-                                                    key={web3.eth.abi.encodeFunctionSignature(abi)}
+                                                    key={AbiCoder.encodeFunctionSignature(abi)}
                                                     onClick={props.onSelected}>
                                                     {
                                                         abi.name

@@ -1,7 +1,5 @@
-import "antd/dist/antd.css";
 import BN from 'bn.js';
 import { Descriptions } from 'antd';
-
 import { useEffect, useState } from "react";
 import { TransferConfig } from "./config";
 
@@ -49,12 +47,14 @@ export function InfomationDisplayer(params: {
                 contract.methods.balanceOf(hdprovider.getAddress())
                     .call()
                     .then((balance: string) => {
-                        let balanceBN = hdweb3.utils.toBN(balance);
-                        balanceBN = balanceBN.div(
-                            hdweb3.utils.toBN(10).pow(hdweb3.utils.toBN(config.tokenInfo.decimals! - 4))
-                        )
-                        let balanceFloat = parseFloat(balanceBN.toString()) / 1e4
-                        setTokenBalance(balanceFloat.toString())
+                        if (balance) {
+                            let balanceBN = hdweb3.utils.toBN(balance);
+                            balanceBN = balanceBN.div(
+                                hdweb3.utils.toBN(10).pow(hdweb3.utils.toBN(config.tokenInfo.decimals! - 4))
+                            )
+                            let balanceFloat = parseFloat(balanceBN.toString()) / 1e4
+                            setTokenBalance(balanceFloat.toString())
+                        }
                     })
             }
         }

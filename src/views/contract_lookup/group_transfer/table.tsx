@@ -46,6 +46,13 @@ export function TransferTable(params: {
         { title: '数量', dataIndex: 'amount', key: 'amount', },
         {
             title: '交易状态', dataIndex: 'state', key: 'state',
+            filters: ["Ready", "Pending", "Queue", "Success", "Error"].map(state => {
+                return {
+                    text: state,
+                    value: state
+                }
+            }),
+            onFilter: (value, record) => record.state === (value as TxState),
             render: (_, { state, error }) => {
                 let color;
                 switch (state) {
@@ -57,9 +64,9 @@ export function TransferTable(params: {
                     default: color = "red";
                 }
                 return (state ? <Tag color={color}>{state === "Error" ? error : state}</Tag> : undefined)
-            }
+            },
         },
-        { title: 'Hash', dataIndex: 'txHash', key: 'txHash' },
+        { title: 'Hash', dataIndex: 'txHash', key: 'txHash', width: '40%' },
     ]
 
     useEffect(() => {
@@ -145,6 +152,15 @@ export function TransferTable(params: {
 
         for (let i = 0; i < dataSource.length && pendingTxPromise.length < maxLimit; i++) {
             if (dataSource[i].state === "Queue") {
+
+                if (!web3.utils.isAddress(dataSource[i].address)) {
+                    dataSource[i].state = "Error"
+                    dataSource[i].error = "Invalid Address"
+                    setDataSource(dataSource.slice())
+                    setTaskState("Stoping")
+                    break;
+                }
+
                 let sentAmount = web3.utils.toBN(web3.utils.toWei(dataSource[i].amount.toString()));
                 let fee = web3.utils.toBN(gasPrice).muln(21000)
                 if (sentAmount.add(fee).gt(balance)) {
@@ -200,6 +216,14 @@ export function TransferTable(params: {
 
         for (let i = 0; i < dataSource.length && pendingTxPromise.length < maxLimit; i++) {
             if (dataSource[i].state === "Queue") {
+                if (!web3.utils.isAddress(dataSource[i].address)) {
+                    dataSource[i].state = "Error"
+                    dataSource[i].error = "Invalid Address"
+                    setDataSource(dataSource.slice())
+                    setTaskState("Stoping")
+                    break;
+                }
+
                 let decimals = transferConfig!.tokenInfo!.decimals!;
                 let decimalsPowSub4 = web3.utils.toBN(10).pow(web3.utils.toBN(decimals - 4))
                 let sentAmount = web3.utils.toBN(Math.floor(dataSource[i].amount * 10000)).mul(decimalsPowSub4)
@@ -288,7 +312,7 @@ export function TransferTable(params: {
                         <Option value="8">8 Gwei</Option>
                     </Select>
                 </Descriptions.Item>
-                <Descriptions.Item label={`转出数量-${transferConfig?.tokenType === "BNB" ? "BNB" : transferConfig!.tokenInfo.symbol}`} span={1}>
+                <Descriptions.Item label={`转出总量`} span={1}>
                     {totalSentAmount}
                 </Descriptions.Item>
             </Descriptions>

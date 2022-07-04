@@ -10,16 +10,14 @@ import './index.scss';
 export function FunctionContent(props: {
     contract: CompiledContract,
     abi: AbiItem,
-    networkID: number
+    networkID?: number,
+    web3?: Web3
 }) {
-    const { contract, abi, networkID } = props
+    const { contract, abi, networkID, web3 } = props
 
-    const web3 = new Web3((window as any).ethereum);
-
-    const deployedAddress = contract.networks !== undefined ? contract.networks[networkID]?.address : undefined;
+    const deployedAddress = contract.networks !== undefined && networkID && contract.networks[networkID] ? contract.networks[networkID].address : undefined;
 
     const fname = utils.functionFormatStringFromABI(abi)
-
     const devdoc = contract.devdoc && contract.devdoc.methods && contract.devdoc.methods[fname] ? contract.devdoc.methods[fname] : undefined
     const userdoc = contract.userdoc && contract.userdoc.methods && contract.userdoc.methods[fname] ? contract.userdoc.methods[fname] : undefined
     const eventDoc = contract.devdoc && contract.devdoc.events && contract.devdoc.events[fname] ? contract.devdoc.events[fname] : undefined
@@ -74,7 +72,7 @@ export function FunctionContent(props: {
                 <SourceCodeCard sourceCode={utils.functionSourceCodeFormatFromABI(abi)} />
             </Card>
             {
-                abi.type === 'function'
+                abi.type === 'function' && web3
                     ? <ABIFunctionCallerView
                         className="marginCard"
                         style={{
@@ -90,7 +88,7 @@ export function FunctionContent(props: {
                     : null
             }
             {
-                abi.type === 'event'
+                abi.type === 'event' && web3
                     ? <ABIEventCallerView
                         className="marginCard"
                         style={{

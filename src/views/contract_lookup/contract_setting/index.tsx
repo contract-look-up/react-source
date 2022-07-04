@@ -6,7 +6,7 @@ import moment from "moment";
 
 function NetWorkTable(params: {
     networks: Object[],
-    networkID: number,
+    networkID?: number,
 }) {
     const { networks, networkID } = params;
 
@@ -14,7 +14,7 @@ function NetWorkTable(params: {
 
     for (var a in networks) {
         dataSource.push({
-            connected: parseInt(a) === networkID,
+            connected: networkID && parseInt(a) === networkID,
             networkid: a,
             contractAddress: (networks[a] as any).address
         })
@@ -64,7 +64,7 @@ function NetWorkTable(params: {
 
 export function ContractSetting(params: {
     contract: CompiledContract,
-    networkID: number,
+    networkID?: number,
 }) {
     const { contract, networkID } = params;
 
